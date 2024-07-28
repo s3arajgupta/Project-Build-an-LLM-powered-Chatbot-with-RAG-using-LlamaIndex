@@ -1,10 +1,9 @@
 import os
+import sys
 import tempfile
 import streamlit as st
 # Access the API key from the environment variable
 api_key = os.getenv('OPENAI_API_KEY')
-print("api_key")
-print(api_key)
 if api_key:
     st.write("API Key found")
 else:
@@ -71,13 +70,32 @@ def wikipage_list(query):
 #         documents = loader.load_data(pages=wikipage_requests)
 #     return documents
 
+# def create_wikidocs(wikipage_requests):
+#     # Set the environment variable for the temporary directory
+#     with tempfile.TemporaryDirectory() as temp_dir:
+#         os.environ['LLAMA_INDEX_MODULE_DIR'] = temp_dir
+#         WikipediaReader = download_loader("WikipediaReader")
+#         loader = WikipediaReader()
+#         documents = loader.load_data(pages=wikipage_requests)
+#     return documents
+
 def create_wikidocs(wikipage_requests):
-    # Set the environment variable for the temporary directory
+    # Create a custom directory for the modules
     with tempfile.TemporaryDirectory() as temp_dir:
-        os.environ['LLAMA_INDEX_MODULE_DIR'] = temp_dir
+        custom_module_dir = os.path.join(temp_dir, "llamahub_modules")
+        os.makedirs(custom_module_dir, exist_ok=True)
+        
+        # Add the custom directory to sys.path
+        sys.path.insert(0, custom_module_dir)
+        
+        # Now, use the custom directory for downloading modules
         WikipediaReader = download_loader("WikipediaReader")
         loader = WikipediaReader()
         documents = loader.load_data(pages=wikipage_requests)
+        
+        # Remove the custom directory from sys.path
+        sys.path.pop(0)
+        
     return documents
 
 def create_index(query):
