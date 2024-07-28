@@ -1,3 +1,11 @@
+import os
+# Access the API key from the environment variable
+api_key = os.getenv('OPENAI_API_KEY')
+if api_key:
+    st.write("API Key found")
+else:
+    st.write("API Key not found")
+    
 import streamlit as st
 import chainlit as cl
 from llama_index import download_loader, VectorStoreIndex, ServiceContext
@@ -21,7 +29,8 @@ class WikiPageList(BaseModel):
     pages: list
 
 def wikipage_list(query):
-    openai.api_key = get_apikey()
+    # openai.api_key = get_apikey()
+    openai.api_key = api_key
 
     prompt_template_str = """
     Given the input {query}, 
@@ -77,7 +86,8 @@ def create_react_agent(MODEL, index):
         )
     ]
 
-    openai.api_key = get_apikey()
+    # openai.api_key = get_apikey()
+    openai.api_key = api_key
     llm = OpenAI(model=MODEL)
     agent = ReActAgent.from_tools(
         tools=query_engine_tools,
