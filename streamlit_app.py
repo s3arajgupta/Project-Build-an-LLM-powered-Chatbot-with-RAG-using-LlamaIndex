@@ -65,7 +65,8 @@ def create_wikidocs(wikipage_requests):
     os.makedirs(custom_module_dir, exist_ok=True)
 
     # Use the custom directory for downloading modules
-    WikipediaReader = download_loader("WikipediaReader", custom_path=custom_module_dir)
+    WikipediaReader = download_loader("WikipediaReader", custom_path=cwdPath)
+    # WikipediaReader = download_loader("WikipediaReader", custom_path=custom_module_dir)
     loader = WikipediaReader()
     documents = loader.load_data(pages=wikipage_requests)
     
