@@ -1,0 +1,14 @@
+name: Set Environment Variables
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to main branch
+
+jobs:
+  set-env-vars:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set environment variables
+      run: echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
