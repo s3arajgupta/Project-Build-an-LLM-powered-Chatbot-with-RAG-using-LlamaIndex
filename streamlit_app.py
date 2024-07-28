@@ -2,6 +2,8 @@ import os
 import streamlit as st
 # Access the API key from the environment variable
 api_key = os.getenv('OPENAI_API_KEY')
+print("api_key")
+print(api_key)
 if api_key:
     st.write("API Key found")
 else:
