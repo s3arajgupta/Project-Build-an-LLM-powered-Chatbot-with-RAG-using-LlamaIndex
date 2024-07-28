@@ -4,10 +4,10 @@ import tempfile
 import streamlit as st
 # Access the API key from the environment variable
 api_key = os.getenv('OPENAI_API_KEY')
-if api_key:
-    st.write("API Key found")
-else:
-    st.write("API Key not found")
+# if api_key:
+#     st.write("API Key found")
+# else:
+#     st.write("API Key not found")
     
 import chainlit as cl
 from llama_index import download_loader, VectorStoreIndex, ServiceContext
@@ -56,6 +56,18 @@ def wikipage_list(query):
 
     return wikipage_requests.pages
 
+def create_wikidocs(wikipage_requests):
+    # Create a custom directory for the modules
+    custom_module_dir = os.path.join(os.getcwd(), "llamahub_modules")
+    os.makedirs(custom_module_dir, exist_ok=True)
+
+    # Use the custom directory for downloading modules
+    WikipediaReader = download_loader("WikipediaReader", custom_path=custom_module_dir)
+    loader = WikipediaReader()
+    documents = loader.load_data(pages=wikipage_requests)
+    
+    return documents
+
 # def create_wikidocs(wikipage_requests):
 #     WikipediaReader = download_loader("WikipediaReader")
 #     loader = WikipediaReader()
@@ -79,22 +91,22 @@ def wikipage_list(query):
 #         documents = loader.load_data(pages=wikipage_requests)
 #     return documents
 
-def create_wikidocs(wikipage_requests):
-    # Create a custom directory for the modules
-    with tempfile.TemporaryDirectory() as temp_dir:
-        custom_module_dir = os.path.join(temp_dir, "llamahub_modules")
-        os.makedirs(custom_module_dir, exist_ok=True)
+# def create_wikidocs(wikipage_requests):
+#     # Create a custom directory for the modules
+#     with tempfile.TemporaryDirectory() as temp_dir:
+#         custom_module_dir = os.path.join(temp_dir, "llamahub_modules")
+#         os.makedirs(custom_module_dir, exist_ok=True)
         
-        # Add the custom directory to sys.path
-        sys.path.insert(0, custom_module_dir)
+#         # Add the custom directory to sys.path
+#         sys.path.insert(0, custom_module_dir)
         
-        # Now, use the custom directory for downloading modules
-        WikipediaReader = download_loader("WikipediaReader")
-        loader = WikipediaReader()
-        documents = loader.load_data(pages=wikipage_requests)
+#         # Now, use the custom directory for downloading modules
+#         WikipediaReader = download_loader("WikipediaReader")
+#         loader = WikipediaReader()
+#         documents = loader.load_data(pages=wikipage_requests)
         
-        # Remove the custom directory from sys.path
-        sys.path.pop(0)
+#         # Remove the custom directory from sys.path
+#         sys.path.pop(0)
         
     return documents
 
