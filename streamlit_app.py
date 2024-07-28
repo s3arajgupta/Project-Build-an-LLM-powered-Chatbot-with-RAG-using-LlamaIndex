@@ -10,6 +10,7 @@ api_key = os.getenv('OPENAI_API_KEY')
 #     st.write("API Key not found")
 st.write("API Key found")
 st.write(os.getcwd())
+cwdPath = os.getcwd()
     
 import chainlit as cl
 from llama_index import download_loader, VectorStoreIndex, ServiceContext
@@ -60,7 +61,7 @@ def wikipage_list(query):
 
 def create_wikidocs(wikipage_requests):
     # Create a custom directory for the modules
-    custom_module_dir = os.path.join(os.getcwd(), "llamahub_modules")
+    custom_module_dir = os.path.join(cwdPath, "llamahub_modules")
     os.makedirs(custom_module_dir, exist_ok=True)
 
     # Use the custom directory for downloading modules
