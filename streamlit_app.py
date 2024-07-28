@@ -7,7 +7,9 @@ from llama_index.tools import QueryEngineTool, ToolMetadata
 from llama_index.agent import ReActAgent
 from llama_index.llms import OpenAI
 from llama_index.callbacks.base import CallbackManager
+from llama_index.program import OpenAIPydanticProgram
 from pydantic import BaseModel
+
 from utils import get_apikey
 import openai
 
