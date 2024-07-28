@@ -1,5 +1,5 @@
 streamlit
 chainlit
 openai
-llama_index
+llama-index
 pydantic
