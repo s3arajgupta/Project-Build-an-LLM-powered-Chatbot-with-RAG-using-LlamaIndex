@@ -13,8 +13,7 @@ def get_apikey():
     """
     
     # Construct the full path to the configuration file
-    script_dir = "/usercode/"
-    file_path = os.path.join(script_dir, "apikeys.yml")
+    file_path = os.path.join("apikeys.yml")
 
     with open(file_path, 'r') as yamlfile:
         loaded_yamlfile = yaml.safe_load(yamlfile)
