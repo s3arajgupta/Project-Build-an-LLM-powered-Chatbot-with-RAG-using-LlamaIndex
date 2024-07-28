@@ -1,0 +1,5 @@
+streamlit
+chainlit
+openai
+llama_index
+pydantic
