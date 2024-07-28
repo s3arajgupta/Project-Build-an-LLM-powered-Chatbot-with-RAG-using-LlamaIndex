@@ -1,4 +1,5 @@
 import os
+import streamlit as st
 # Access the API key from the environment variable
 api_key = os.getenv('OPENAI_API_KEY')
 if api_key:
@@ -6,7 +7,6 @@ if api_key:
 else:
     st.write("API Key not found")
     
-import streamlit as st
 import chainlit as cl
 from llama_index import download_loader, VectorStoreIndex, ServiceContext
 from llama_index.node_parser import SimpleNodeParser
