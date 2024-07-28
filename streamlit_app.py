@@ -63,10 +63,19 @@ def wikipage_list(query):
 #     documents = loader.load_data(pages=wikipage_requests)
 #     return documents
 
+# def create_wikidocs(wikipage_requests):
+#     # Use a temporary directory for downloading modules
+#     with tempfile.TemporaryDirectory() as temp_dir:
+#         WikipediaReader = download_loader("WikipediaReader", download_dir=temp_dir)
+#         loader = WikipediaReader()
+#         documents = loader.load_data(pages=wikipage_requests)
+#     return documents
+
 def create_wikidocs(wikipage_requests):
-    # Use a temporary directory for downloading modules
+    # Set the environment variable for the temporary directory
     with tempfile.TemporaryDirectory() as temp_dir:
-        WikipediaReader = download_loader("WikipediaReader", download_dir=temp_dir)
+        os.environ['LLAMA_INDEX_MODULE_DIR'] = temp_dir
+        WikipediaReader = download_loader("WikipediaReader")
         loader = WikipediaReader()
         documents = loader.load_data(pages=wikipage_requests)
     return documents
