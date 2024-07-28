@@ -1,1 +1,2 @@
 chainlit==0.7.0
+llama-index==0.8.33
