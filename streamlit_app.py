@@ -8,6 +8,8 @@ from llama_index.agent import ReActAgent
 from llama_index.llms import OpenAI
 from llama_index.callbacks.base import CallbackManager
 from llama_index.program import OpenAIPydanticProgram
+from llama_index.llms import OpenAI as LlamaOpenAI
+
 from pydantic import BaseModel
 
 from utils import get_apikey
@@ -28,12 +30,16 @@ def wikipage_list(query):
     If only one page is mentioned, return a single
     element list.
     """
+
+    llm = LlamaOpenAI(model="gpt-3.5-turbo")  # Explicitly set the model to gpt-3.5-turbo
+
     program = OpenAIPydanticProgram.from_defaults(
         output_cls=WikiPageList,
         prompt_template_str=prompt_template_str,
-        model="gpt-3.5-turbo",
         verbose=True,
+        llm=llm
     )
+
 
     wikipage_requests = program(query=query)
 

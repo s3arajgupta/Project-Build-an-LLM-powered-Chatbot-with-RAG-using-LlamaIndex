@@ -55,3 +55,5 @@ if __name__ == "__main__":
     query = "/get wikipages: paris, lagos, lao"
     index = create_index(query)
     print("INDEX CREATED", index)
+
+# python index_wikipages.py

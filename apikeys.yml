@@ -1,2 +1,2 @@
 openai:
-   api_key: sk-proj-qpcbWDjhy8FLAVWU6fHKT3BlbkFJ7Iet2cVEkxQU7DB441ow
+  api_key: ${OPENAI_API_KEY}

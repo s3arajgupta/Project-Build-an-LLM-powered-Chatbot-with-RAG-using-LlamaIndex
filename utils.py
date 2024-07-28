@@ -23,3 +23,5 @@ def get_apikey():
 
 if __name__ == "__main__":
     print("API_KEY", get_apikey())
+
+# python utils.py

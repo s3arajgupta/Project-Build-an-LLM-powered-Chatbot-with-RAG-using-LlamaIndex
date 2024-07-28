@@ -3,6 +3,7 @@ from llama_index import download_loader, VectorStoreIndex, ServiceContext
 from llama_index.node_parser import SimpleNodeParser
 from llama_index.text_splitter import get_default_text_splitter
 import openai
+from llama_index.llms import OpenAI as LlamaOpenAI
 from pydantic import BaseModel
 from llama_index.program import OpenAIPydanticProgram
 from utils import get_apikey
@@ -23,11 +24,21 @@ def wikipage_list(query):
     If only one page is mentioned, return a single
     element list.
     """
+
+    llm = LlamaOpenAI(model="gpt-3.5-turbo")  # Explicitly set the model to gpt-3.5-turbo
+
     program = OpenAIPydanticProgram.from_defaults(
         output_cls=WikiPageList,
         prompt_template_str=prompt_template_str,
         verbose=True,
+        llm=llm
     )
+
+    # program = OpenAIPydanticProgram.from_defaults(
+    #     output_cls=WikiPageList,
+    #     prompt_template_str=prompt_template_str,
+    #     verbose=True,
+    # )
 
     wikipage_requests = program(query=query)
 
@@ -55,3 +66,5 @@ if __name__ == "__main__":
     query = "/get wikipages: paris, lagos, lao"
     index = create_index(query)
     print("INDEX CREATED", index)
+
+# python index_wikipages.py
