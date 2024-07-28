@@ -8,6 +8,8 @@ api_key = os.getenv('OPENAI_API_KEY')
 #     st.write("API Key found")
 # else:
 #     st.write("API Key not found")
+st.write("API Key found")
+st.write(os.getcwd())
     
 import chainlit as cl
 from llama_index import download_loader, VectorStoreIndex, ServiceContext
