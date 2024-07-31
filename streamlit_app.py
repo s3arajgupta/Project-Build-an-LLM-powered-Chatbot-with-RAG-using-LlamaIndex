@@ -38,10 +38,12 @@ if st.button("Index Pages"):
                 agent = create_react_agent(model_choice)
                 print(agent)
             else:
-                st.error("Failed to create index.")
+                # st.error("Failed to create index.")
+                print("Failed to create index.")
         except Exception as e:
-            st.error(f"An error occurred: {e}")
-            print(e)
+            # st.error(f"An error occurred: {e}")
+            print(f"An error occurred: {e}")
+            # print(e)
 
 # Chat Box Section
 st.header("Chat with Agent")
