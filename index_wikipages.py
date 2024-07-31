@@ -1,4 +1,4 @@
-# REPLACE THIS WITH YOUR CODE
+import os
 from llama_index import download_loader, VectorStoreIndex, ServiceContext
 from llama_index.node_parser import SimpleNodeParser
 from llama_index.text_splitter import get_default_text_splitter
@@ -8,11 +8,13 @@ from pydantic import BaseModel
 from llama_index.program import OpenAIPydanticProgram
 from utils import get_apikey
 
+# Set a custom directory for llama_index loader
+os.environ['LLAMA_INDEX_DIR'] = './llamahub_modules'
+
 # define the data model in pydantic
 class WikiPageList(BaseModel):
     "Data model for WikiPageList"
     pages: list
-
 
 def wikipage_list(query):
     openai.api_key = get_apikey()
@@ -34,23 +36,15 @@ def wikipage_list(query):
         llm=llm
     )
 
-    # program = OpenAIPydanticProgram.from_defaults(
-    #     output_cls=WikiPageList,
-    #     prompt_template_str=prompt_template_str,
-    #     verbose=True,
-    # )
-
     wikipage_requests = program(query=query)
 
     return wikipage_requests
 
-
 def create_wikidocs(wikipage_requests):
     WikipediaReader = download_loader("WikipediaReader")
     loader = WikipediaReader()
-    documents = loader.load_data(pages=wikipage_requests)
+    documents = loader.load_data(pages=wikipage_requests.pages)  # Use .pages to access the list
     return documents
-
 
 def create_index(query):
     global index
@@ -66,5 +60,3 @@ if __name__ == "__main__":
     query = "/get wikipages: paris, lagos, lao"
     index = create_index(query)
     print("INDEX CREATED", index)
-
-# python index_wikipages.py
