@@ -1,82 +1,71 @@
-# REPLACE THIS WITH YOUR CODE
-from llama_index.tools import QueryEngineTool, ToolMetadata
-import chainlit as cl
-from chainlit.input_widget import Select, TextInput
-import openai
-from llama_index.agent import ReActAgent
-from llama_index.llms import OpenAI
-from llama_index.callbacks.base import CallbackManager
+import streamlit as st
 from index_wikipages import create_index
+from chat_agent import create_react_agent
+import openai
 from utils import get_apikey
+import os
 
+# Initialize global variables
 index = None
+agent = None
 
+st.title("Wikipedia Index and Chat Agent")
 
-@cl.on_chat_start
-async def on_chat_start():
-    global index
-    # Settings
-    settings = await cl.ChatSettings(
-        [
-            Select(
-                id="MODEL",
-                label="OpenAI - Model",
-                values=["gpt-3.5-turbo"],
-                initial_index=0,
-            ),
-            TextInput(id="WikiPageRequest", label="Request Wikipage"),
-        ]
-    ).send()
+# Display the instructions from chainlit.md
+def show_instructions():
+    with open("chainlit.md", "r") as file:
+        instructions = file.read()
+    st.markdown(instructions)
 
+# Function to handle settings
+def handle_settings():
+    global index, agent
+    with st.form("settings_form"):
+        model_choice = st.selectbox("Choose Model:", ["gpt-3.5-turbo"])
+        query = st.text_input("Enter pages to index (comma-separated):", "paris, lagos, lao")
+        submitted = st.form_submit_button("Confirm")
+        if submitted:
+            with st.spinner("Indexing..."):
+                try:
+                    index = create_index(query)
+                    if index:
+                        st.success(f'Wikipage(s) "{query}" successfully indexed')
+                        agent = create_react_agent(model_choice)
+                    else:
+                        st.error("Failed to create index.")
+                except Exception as e:
+                    st.error(f"An error occurred: {e}")
+                    print(e)
 
-def wikisearch_engine(index):
-    query_engine = index.as_query_engine(
-        response_mode="compact", verbose=True, similarity_top_k=10
-    )
-    return query_engine
+# Function to handle chat
+def handle_chat():
+    user_message = st.text_input("You: ")
+    if st.button("Send"):
+        if agent:
+            try:
+                response = agent.chat(user_message)
+                st.text_area("Agent:", response, height=200)
+            except Exception as e:
+                st.error(f"An error occurred while chatting: {e}")
+                print(e)
+        else:
+            st.warning("Please set up the settings first.")
 
+# Display instructions on initial load
+if "instructions_shown" not in st.session_state:
+    show_instructions()
+    st.session_state["instructions_shown"] = True
 
-def create_react_agent(MODEL):
-    query_engine_tools = [
-        QueryEngineTool(
-            query_engine=wikisearch_engine(index),
-            metadata=ToolMetadata(
-                name="Wikipedia Search",
-                description="Useful for performing searches on the wikipedia knowledgebase",
-            ),
-        )
-    ]
+# Settings Panel
+st.sidebar.header("Settings Panel")
+handle_settings()
 
-    openai.api_key = get_apikey()
-    llm = OpenAI(model=MODEL)
-    agent = ReActAgent.from_tools(
-        tools=query_engine_tools,
-        llm=llm,
-        callback_manager=CallbackManager([cl.LlamaIndexCallbackHandler()]),
-        verbose=True,
-    )
-    return agent
+# Chat Box
+st.header("Chat with Agent")
+if index:
+    handle_chat()
+else:
+    st.warning("Please index pages first.")
 
-
-@cl.on_settings_update
-async def setup_agent(settings):
-    global agent
-    global index
-    query = settings["WikiPageRequest"]
-    index = create_index(query)
-
-    print("on_settings_update", settings)
-    MODEL = settings["MODEL"]
-    agent = create_react_agent(MODEL)
-    await cl.Message(
-        author="Agent", content=f"""Wikipage(s) "{query}" successfully indexed"""
-    ).send()
-
-
-@cl.on_message
-async def main(message: str):
-    if agent:
-        response = await cl.make_async(agent.chat)(message)
-        await cl.Message(author="Agent", content=response).send()
-
-# chainlit run chat_agent.py
+# Ensure the OpenAI API key is set
+openai.api_key = get_apikey()
