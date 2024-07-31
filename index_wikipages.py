@@ -34,7 +34,7 @@ def wikipage_list(query):
     )
 
     wikipage_requests = program(query=query)
-
+    print(f'Wikipage requests: {wikipage_requests}')
     return wikipage_requests
 
 def create_wikidocs(wikipage_requests):
@@ -42,6 +42,7 @@ def create_wikidocs(wikipage_requests):
     WikipediaReader = download_loader("WikipediaReader", custom_path=custom_loader_path)
     loader = WikipediaReader()
     documents = loader.load_data(pages=wikipage_requests.pages)  # Use .pages to access the list
+    print(f'Documents: {documents}')
     return documents
 
 def create_index(query):
@@ -55,6 +56,6 @@ def create_index(query):
     return index
 
 if __name__ == "__main__":
-    query = "/get wikipages: london"
+    query = "/get wikipages: paris, lagos, lao"
     index = create_index(query)
     print("INDEX CREATED", index)
