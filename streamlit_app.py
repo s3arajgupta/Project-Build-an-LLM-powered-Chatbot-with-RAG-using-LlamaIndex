@@ -29,12 +29,14 @@ query = st.text_input("Enter pages to index (comma-separated):", "paris, tokyo")
 if st.button("Index Pages"):
     with st.spinner("Indexing..."):
         try:
+            print(index)
             index = create_index(query)
-            st.write(index)
+            print("================================================")
+            print(index)
             if index:
                 st.success(f'Wikipage(s) "{query}" successfully indexed')
                 agent = create_react_agent(model_choice)
-                st.write(agent)
+                print(agent)
             else:
                 st.error("Failed to create index.")
         except Exception as e:

@@ -46,6 +46,7 @@ def create_wikidocs(wikipage_requests):
     return documents
 
 def create_index(query):
+    print(f'indexFunc: {index}')
     global index
     wikipage_requests = wikipage_list(query)
     documents = create_wikidocs(wikipage_requests)
