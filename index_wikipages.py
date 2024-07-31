@@ -53,8 +53,8 @@ def create_index(query):
     parser = SimpleNodeParser.from_defaults(text_splitter=text_splits)
     service_context = ServiceContext.from_defaults(node_parser=parser)
     index = VectorStoreIndex.from_documents(documents, service_context=service_context)
-    print(f'documents: {documents}')
-    print(f'index: {index}')
+    print(f'documentsFunc: {documents}')
+    print(f'indexFunc: {index}')
     return index
 
 if __name__ == "__main__":
