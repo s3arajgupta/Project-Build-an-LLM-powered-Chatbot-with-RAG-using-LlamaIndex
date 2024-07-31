@@ -1,8 +1,7 @@
 import streamlit as st
 from index_wikipages import create_index
-from chat_agent import create_react_agent, wikisearch_engine
+from chat_agent import create_react_agent
 import openai
-from llama_index.llms import OpenAI as LlamaOpenAI
 from utils import get_apikey
 
 # Initialize global variables

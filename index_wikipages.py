@@ -1,4 +1,3 @@
-import os
 from llama_index import download_loader, VectorStoreIndex, ServiceContext
 from llama_index.node_parser import SimpleNodeParser
 from llama_index.text_splitter import get_default_text_splitter
@@ -7,9 +6,7 @@ from llama_index.llms import OpenAI as LlamaOpenAI
 from pydantic import BaseModel
 from llama_index.program import OpenAIPydanticProgram
 from utils import get_apikey
-
-# Set a custom directory for llama_index loader
-os.environ['LLAMA_INDEX_DIR'] = './llamahub_modules'
+import os
 
 # define the data model in pydantic
 class WikiPageList(BaseModel):
@@ -41,7 +38,8 @@ def wikipage_list(query):
     return wikipage_requests
 
 def create_wikidocs(wikipage_requests):
-    WikipediaReader = download_loader("WikipediaReader", custom_path="/home/adminuser/venv/lib/python3.9/site-packages/llama_index/readers/llamahub_modules")
+    custom_loader_path = './llamahub_modules'
+    WikipediaReader = download_loader("WikipediaReader", custom_path=custom_loader_path)
     loader = WikipediaReader()
     documents = loader.load_data(pages=wikipage_requests.pages)  # Use .pages to access the list
     return documents
