@@ -1,6 +1,5 @@
 import os
 import sys
-import tempfile
 import streamlit as st
 # Access the API key from the environment variable
 api_key = os.getenv('OPENAI_API_KEY')
@@ -38,7 +37,7 @@ def wikipage_list(query):
     openai.api_key = api_key
 
     prompt_template_str = """
-    Given the input {query}, 
+    Given the input query: "{query}",
     extract the Wikipedia pages mentioned after 
     "please index:" and return them as a list.
     If only one page is mentioned, return a single
@@ -61,15 +60,23 @@ def wikipage_list(query):
 
 def create_wikidocs(wikipage_requests):
     # Create a custom directory for the modules
-    custom_module_dir = os.path.join(cwdPath, "llamahub_modules")
-    os.makedirs(custom_module_dir, exist_ok=True)
+    # custom_module_dir = os.path.join(cwdPath, "llamahub_modules")
+    # os.makedirs(custom_module_dir, exist_ok=True)
 
     # Use the custom directory for downloading modules
-    WikipediaReader = download_loader("WikipediaReader", custom_path=cwdPath)
+    WikipediaReader = download_loader("WikipediaReader")
+    # WikipediaReader = download_loader("WikipediaReader", custom_path=cwdPath)
     # WikipediaReader = download_loader("WikipediaReader", custom_path=custom_module_dir)
     loader = WikipediaReader()
-    documents = loader.load_data(pages=wikipage_requests)
+    # documents = loader.load_data(pages=wikipage_requests)
     
+    documents = []
+    for page in wikipage_requests:
+        try:
+            documents.extend(loader.load_data(pages=[page]))
+        except Exception as e:
+            st.write(f"Error loading Wikipedia page '{page}': {e}")
+
     return documents
 
 # def create_wikidocs(wikipage_requests):
