@@ -37,7 +37,7 @@ def wikisearch_engine(index):
     return query_engine
 
 
-def create_react_agent(MODEL):
+def create_react_agent(MODEL, index):
     query_engine_tools = [
         QueryEngineTool(
             query_engine=wikisearch_engine(index),

@@ -25,11 +25,11 @@ def handle_settings():
     if st.button("Confirm"):
         with st.spinner("Indexing..."):
             index = create_index(query)
-            st.success(f'Wikipage(s) "{query}" successfully indexed, {index}')
-            print(index)
-            st.write(index)
-            st.info(index)
-            agent = create_react_agent(model_choice)
+            st.success(f'Wikipage(s) "{query}" successfully indexed')
+            st.info("index ", index)
+            st.info("model_choice ", model_choice)
+            agent = create_react_agent(model_choice, index)
+            st.info("agent ", agent)
 
 # Function to handle chat
 def handle_chat():
