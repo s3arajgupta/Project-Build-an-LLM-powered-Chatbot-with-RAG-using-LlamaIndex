@@ -22,7 +22,7 @@ def handle_settings():
     global index, agent
     with st.form("settings_form"):
         model_choice = st.selectbox("Choose Model:", ["gpt-3.5-turbo"])
-        query = st.text_input("Enter pages to index (comma-separated):", "paris, lagos, lao")
+        query = st.text_input("Enter pages to index (comma-separated):", "paris, tokyo")
         submitted = st.form_submit_button("Confirm")
         if submitted:
             with st.spinner("Indexing..."):
