@@ -8,6 +8,8 @@ from llama_index.program import OpenAIPydanticProgram
 from utils import get_apikey
 import os
 
+index = None
+
 # define the data model in pydantic
 class WikiPageList(BaseModel):
     "Data model for WikiPageList"
