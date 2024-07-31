@@ -1,16 +1,15 @@
-import os
-import sys
 import streamlit as st
-# Access the API key from the environment variable
+import os
+# import sys
 api_key = os.getenv('OPENAI_API_KEY')
-# if api_key:
-#     st.write("API Key found")
-# else:
-#     st.write("API Key not found")
-st.write("API Key found")
-st.write(os.getcwd())
+if api_key:
+    st.write("API Key found")
+else:
+    st.write("API Key not found")
 cwdPath = os.getcwd()
+st.write(cwdPath)
     
+import openai
 import chainlit as cl
 from llama_index import download_loader, VectorStoreIndex, ServiceContext
 from llama_index.node_parser import SimpleNodeParser
@@ -21,11 +20,7 @@ from llama_index.llms import OpenAI
 from llama_index.callbacks.base import CallbackManager
 from llama_index.program import OpenAIPydanticProgram
 from llama_index.llms import OpenAI as LlamaOpenAI
-
 from pydantic import BaseModel
-
-from utils import get_apikey
-import openai
 
 # Define the data model in pydantic
 class WikiPageList(BaseModel):
@@ -33,7 +28,6 @@ class WikiPageList(BaseModel):
     pages: list
 
 def wikipage_list(query):
-    # openai.api_key = get_apikey()
     openai.api_key = api_key
 
     prompt_template_str = """
@@ -61,11 +55,11 @@ def wikipage_list(query):
 def create_wikidocs(wikipage_requests):
     # Create a custom directory for the modules
     custom_module_dir = os.path.join(cwdPath, "llamahub_modules")
+    st.write(custom_module_dir)
     os.makedirs(custom_module_dir, exist_ok=True)
 
     # Use the custom directory for downloading modules
     # WikipediaReader = download_loader("WikipediaReader")
-    # WikipediaReader = download_loader("WikipediaReader", custom_path=cwdPath)
     WikipediaReader = download_loader("WikipediaReader", custom_path=custom_module_dir)
     loader = WikipediaReader()
     # documents = loader.load_data(pages=wikipage_requests)
@@ -147,9 +141,14 @@ def create_react_agent(MODEL, index):
         )
     ]
 
-    # openai.api_key = get_apikey()
     openai.api_key = api_key
     llm = OpenAI(model=MODEL)
+
+    # Ensure that Chainlit context is correctly managed
+    if cl.context_var.get() is None:
+        st.write("cl.context_var.get() ", cl.context_var.get())
+        cl.context_var.set({})
+
     agent = ReActAgent.from_tools(
         tools=query_engine_tools,
         llm=llm,
@@ -168,6 +167,7 @@ model = st.selectbox("Select OpenAI Model", ["gpt-3.5-turbo"])
 if st.button("Run Chainlit"):
     with st.spinner('Indexing Wikipage(s)...'):
         index = create_index(query)
+        st.write(index)
         agent = create_react_agent(model, index)
         st.success(f'Wikipage(s) "{query}" successfully indexed')
 
