@@ -30,6 +30,7 @@ async def on_chat_start():
 
 
 def wikisearch_engine(index):
+    print(index)
     query_engine = index.as_query_engine(
         response_mode="compact", verbose=True, similarity_top_k=10
     )
