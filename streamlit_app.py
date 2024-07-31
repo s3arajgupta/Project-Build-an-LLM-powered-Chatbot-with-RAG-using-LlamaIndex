@@ -33,6 +33,8 @@ def handle_settings():
 
 # Function to handle chat
 def handle_chat():
+    global index, agent
+    st.write("global index, agent agent ", agent)
     user_message = st.text_input("You: ")
     if st.button("Send"):
         if agent:
