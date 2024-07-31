@@ -26,28 +26,17 @@ def handle_settings():
         submitted = st.form_submit_button("Confirm")
         if submitted:
             with st.spinner("Indexing..."):
-                try:
-                    index = create_index(query)
-                    if index:
-                        st.success(f'Wikipage(s) "{query}" successfully indexed')
-                        agent = create_react_agent(model_choice)
-                    else:
-                        st.error("Failed to create index.")
-                except Exception as e:
-                    st.error(f"An error occurred: {e}")
-                    print(e)
+                index = create_index(query)
+                st.success(f'Wikipage(s) "{query}" successfully indexed')
+                agent = create_react_agent(model_choice)
 
 # Function to handle chat
 def handle_chat():
     user_message = st.text_input("You: ")
     if st.button("Send"):
         if agent:
-            try:
-                response = agent.chat(user_message)
-                st.text_area("Agent:", response, height=200)
-            except Exception as e:
-                st.error(f"An error occurred while chatting: {e}")
-                print(e)
+            response = agent.chat(user_message)
+            st.text_area("Agent:", response, height=200)
         else:
             st.warning("Please set up the settings first.")
 
