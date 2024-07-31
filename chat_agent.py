@@ -119,3 +119,25 @@ def create_react_agent(MODEL, index):
         verbose=True,
     )
     return agent
+
+def run_agent(agent, message):
+    query = message
+    while True:
+        # Step 1: Decide how to use the tool
+        tool_decision = agent.decide_tool_usage(query)
+        
+        # Step 2: Use the tool
+        tool_result = tool_decision.use_tool()
+
+        # Step 3: Observe the outcome of the search
+        outcome = agent.observe_tool_outcome(tool_result)
+        
+        # Step 4: Check if the outcome is sufficient
+        if agent.is_outcome_sufficient(outcome):
+            break
+        else:
+            query = agent.refine_query(query, outcome)
+    
+    # Step 5: Respond to the query
+    response = agent.respond_to_query(outcome)
+    return response

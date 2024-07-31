@@ -1,6 +1,6 @@
 import streamlit as st
 from index_wikipages import create_index
-from chat_agent import create_react_agent
+from chat_agent import create_react_agent, run_agent
 import openai
 from utils import get_apikey
 import os
@@ -54,12 +54,19 @@ handle_settings()
 st.write("index")
 st.write(index)
 
-# Chat Box
+# Chat Box Section
 st.header("Chat with Agent")
-if index:
-    handle_chat()
-else:
-    st.warning("Please index pages first.")
+user_message = st.text_input("You: ")
+if st.button("Send"):
+    if agent:
+        try:
+            response = run_agent(agent, user_message)
+            st.text_area("Agent:", response, height=200)
+        except Exception as e:
+            st.error(f"An error occurred while chatting: {e}")
+            print(e)
+    else:
+        st.warning("Please index pages first.")
 
 # Ensure the OpenAI API key is set
 openai.api_key = get_apikey()
