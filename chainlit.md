@@ -1,6 +1,4 @@
-# Congratulations! 🎉
-
-You've successfully completed your chat agent. Now it's time to see it in action.
+# Welcome, Dear User! 🎉
 
 ## How to Use Your Conversational Agent:
 
@@ -12,6 +10,6 @@ please index: London, Barcelona, Paris
 5. **Await Confirmation**: Wait for a moment until the agent sends a message confirming that your chosen Wikipedia page has been indexed.
 6. **Engage with Your Agent**: Now you can freely pose questions to your conversational agent about the indexed Wikipedia pages. Dive in and explore!
 
-### Troubleshooting:
+### Leave a Feedback
 
-If you're experiencing any errors or unexpected behaviour, please refer to the terminal. It can provide valuable insights and error messages to assist you in debugging the code.
+If you're experiencing any errors or unexpected behaviour, please send a note to me(admin) by clicking here. Don't forget provide your valuable insights👀, Ideas💡 and experience✨ with this app.

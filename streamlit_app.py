@@ -10,6 +10,14 @@ agent = None
 
 st.title("Wikipedia Index and Chat Agent")
 
+# Display the instructions from chainlit.md
+def show_instructions():
+    with open("chainlit.md", "r") as file:
+        instructions = file.read()
+    st.markdown(instructions)
+
+show_instructions()
+
 # Section to index Wikipedia pages
 st.header("Index Wikipedia Pages")
 query = st.text_input("Enter pages to index (comma-separated):", "paris, lagos, lao")
