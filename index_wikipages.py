@@ -41,7 +41,7 @@ def wikipage_list(query):
     return wikipage_requests
 
 def create_wikidocs(wikipage_requests):
-    WikipediaReader = download_loader("WikipediaReader")
+    WikipediaReader = download_loader("WikipediaReader", custom_path="/home/adminuser/venv/lib/python3.9/site-packages/llama_index/readers/llamahub_modules")
     loader = WikipediaReader()
     documents = loader.load_data(pages=wikipage_requests.pages)  # Use .pages to access the list
     return documents
