@@ -60,13 +60,13 @@ def wikipage_list(query):
 
 def create_wikidocs(wikipage_requests):
     # Create a custom directory for the modules
-    # custom_module_dir = os.path.join(cwdPath, "llamahub_modules")
-    # os.makedirs(custom_module_dir, exist_ok=True)
+    custom_module_dir = os.path.join(cwdPath, "llamahub_modules")
+    os.makedirs(custom_module_dir, exist_ok=True)
 
     # Use the custom directory for downloading modules
-    WikipediaReader = download_loader("WikipediaReader")
+    # WikipediaReader = download_loader("WikipediaReader")
     # WikipediaReader = download_loader("WikipediaReader", custom_path=cwdPath)
-    # WikipediaReader = download_loader("WikipediaReader", custom_path=custom_module_dir)
+    WikipediaReader = download_loader("WikipediaReader", custom_path=custom_module_dir)
     loader = WikipediaReader()
     # documents = loader.load_data(pages=wikipage_requests)
     
