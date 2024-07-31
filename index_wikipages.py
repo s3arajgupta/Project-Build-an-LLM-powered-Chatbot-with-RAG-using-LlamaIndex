@@ -46,8 +46,8 @@ def create_wikidocs(wikipage_requests):
     return documents
 
 def create_index(query):
-    print(f'indexFunc: {index}')
     global index
+    print(f'indexFunc: {index}')
     wikipage_requests = wikipage_list(query)
     documents = create_wikidocs(wikipage_requests)
     text_splits = get_default_text_splitter(chunk_size=150, chunk_overlap=45)
