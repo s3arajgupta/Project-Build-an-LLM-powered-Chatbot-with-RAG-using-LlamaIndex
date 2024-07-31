@@ -21,11 +21,14 @@ def show_instructions():
 def handle_settings():
     global index, agent
     model_choice = st.selectbox("Choose Model:", ["gpt-3.5-turbo"])
-    query = st.text_input("Enter pages to index (comma-separated):", "paris, lagos, lao")
+    query = st.text_input("Enter pages to index (comma-separated):", "paris, tokyo")
     if st.button("Confirm"):
         with st.spinner("Indexing..."):
             index = create_index(query)
-            st.success(f'Wikipage(s) "{query}" successfully indexed')
+            st.success(f'Wikipage(s) "{query}" successfully indexed, {index}')
+            print(index)
+            st.write(index)
+            st.info(index)
             agent = create_react_agent(model_choice)
 
 # Function to handle chat
