@@ -30,7 +30,7 @@ async def on_chat_start():
 
 
 def wikisearch_engine(index):
-    print(index)
+    print("wikisearch_engine ", index)
     query_engine = index.as_query_engine(
         response_mode="compact", verbose=True, similarity_top_k=10
     )
@@ -50,10 +50,12 @@ def create_react_agent(MODEL, index):
 
     openai.api_key = get_apikey()
     llm = OpenAI(model=MODEL)
+    callback_manager = CallbackManager([])
     agent = ReActAgent.from_tools(
         tools=query_engine_tools,
         llm=llm,
-        callback_manager=CallbackManager([cl.LlamaIndexCallbackHandler()]),
+        # callback_manager=CallbackManager([cl.LlamaIndexCallbackHandler()]),
+        callback_manager=CallbackManager(callback_manager),
         verbose=True,
     )
     return agent

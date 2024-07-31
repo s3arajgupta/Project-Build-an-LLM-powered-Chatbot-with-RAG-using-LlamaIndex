@@ -25,7 +25,7 @@ def handle_settings():
     if st.button("Confirm"):
         with st.spinner("Indexing..."):
             index = create_index(query)
-            st.success(f'Wikipage(s) "{query}" successfully indexed')
+            st.success(f'Wikipage(s) "{query}" successfully indexed {index}')
             st.write("index ", index)
             st.write("model_choice ", model_choice)
             agent = create_react_agent(model_choice, index)
@@ -47,7 +47,7 @@ if "instructions_shown" not in st.session_state:
     st.session_state["instructions_shown"] = True
 
 # Main Settings and Chat Interface
-st.header("Settings and Chat Interface")
+st.header("Settings and Index Interface")
 handle_settings()
 st.write("index")
 st.write(index)
