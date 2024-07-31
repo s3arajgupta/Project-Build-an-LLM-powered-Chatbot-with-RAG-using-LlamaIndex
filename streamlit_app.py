@@ -9,9 +9,7 @@ import os
 index = None
 agent = None
 
-st.title("Wikipedia Index and Chat Agent")
-
-# Display the instructions from chainlit.md
+# Function to show instructions
 def show_instructions():
     with open("chainlit.md", "r") as file:
         instructions = file.read()
@@ -20,53 +18,56 @@ def show_instructions():
 # Function to handle settings
 def handle_settings():
     global index, agent
+    st.header("Settings")
     model_choice = st.selectbox("Choose Model:", ["gpt-3.5-turbo"])
     query = st.text_input("Enter pages to index (comma-separated):", "paris, tokyo")
-    if st.button("Confirm"):
+    if st.button("Index Pages"):
         with st.spinner("Indexing..."):
-            index = create_index(query)
-            st.success(f'Wikipage(s) "{query}" successfully indexed {index}')
-            st.write("index ", index)
-            st.write("model_choice ", model_choice)
-            agent = create_react_agent(model_choice, index)
-            st.write("agent ", agent)
+            try:
+                index = create_index(query)
+                if index:
+                    st.success(f'Wikipage(s) "{query}" successfully indexed')
+                    agent = create_react_agent(model_choice, index)
+                else:
+                    st.error("Failed to create index.")
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
+                print(e)
 
 # Function to handle chat
 def handle_chat():
-    global index, agent
-    st.write("global index, agent agent ", agent)
+    st.header("Chat with Agent")
     user_message = st.text_input("You: ")
     if st.button("Send"):
         if agent:
-            response = agent.chat(user_message)
-            st.text_area("Agent:", response, height=200)
+            try:
+                response = run_agent(agent, user_message)
+                st.text_area("Agent:", response, height=200)
+            except Exception as e:
+                st.error(f"An error occurred while chatting: {e}")
+                print(e)
         else:
-            st.warning("Please set up the settings first.")
+            st.warning("Please index pages first.")
 
-# Display instructions on initial load
-if "instructions_shown" not in st.session_state:
-    show_instructions()
-    st.session_state["instructions_shown"] = True
+# Main App
+def main():
+    st.sidebar.title("Navigation")
+    page = st.sidebar.radio("Go to", ["Home", "Chat with Agent"])
 
-# Main Settings and Chat Interface
-st.header("Settings and Index Interface")
-handle_settings()
-st.write("index")
-st.write(index)
+    if page == "Home":
+        st.title("Wikipedia Index and Chat Agent")
+        
+        # Display instructions on initial load
+        if "instructions_shown" not in st.session_state:
+            show_instructions()
+            st.session_state["instructions_shown"] = True
+        
+        handle_settings()
+    elif page == "Chat with Agent":
+        handle_chat()
 
-# Chat Box Section
-st.header("Chat with Agent")
-user_message = st.text_input("You: ")
-if st.button("Send"):
-    if agent:
-        try:
-            response = run_agent(agent, user_message)
-            st.text_area("Agent:", response, height=200)
-        except Exception as e:
-            st.error(f"An error occurred while chatting: {e}")
-            print(e)
-    else:
-        st.warning("Please index pages first.")
+    # Ensure the OpenAI API key is set
+    openai.api_key = get_apikey()
 
-# Ensure the OpenAI API key is set
-openai.api_key = get_apikey()
+if __name__ == "__main__":
+    main()
