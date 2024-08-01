@@ -1,6 +1,7 @@
 from llama_index.tools import QueryEngineTool, ToolMetadata
 from llama_index.agent import ReActAgent
 from llama_index.llms import OpenAI
+import openai
 from llama_index.callbacks.base import CallbackManager
 from index_wikipages import create_index
 from utils import get_apikey
@@ -33,15 +34,21 @@ def create_react_agent(MODEL, index):
     )
     return agent
 
+# async def run_agent(agent, message):
 def run_agent(agent, message):
-    query = message
-    while True:
-        tool_decision = agent.decide_tool_usage(query)
-        tool_result = tool_decision.use_tool()
-        outcome = agent.observe_tool_outcome(tool_result)
-        if agent.is_outcome_sufficient(outcome):
-            break
-        else:
-            query = agent.refine_query(query, outcome)
-    response = agent.respond_to_query(outcome)
+    # response = await agent.chat(message)
+    response = agent.chat(message)
     return response
+
+# def run_agent(agent, message):
+#     query = message
+#     while True:
+#         tool_decision = agent.decide_tool_usage(query)
+#         tool_result = tool_decision.use_tool()
+#         outcome = agent.observe_tool_outcome(tool_result)
+#         if agent.is_outcome_sufficient(outcome):
+#             break
+#         else:
+#             query = agent.refine_query(query, outcome)
+#     response = agent.respond_to_query(outcome)
+#     return response

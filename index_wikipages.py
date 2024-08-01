@@ -12,7 +12,7 @@ class WikiPageList(BaseModel):
     "Data model for WikiPageList"
     pages: list
 
-def wikipage_list(query):
+def wikipage_list(query, model):
     openai.api_key = get_apikey()
 
     prompt_template_str = """
@@ -23,7 +23,7 @@ def wikipage_list(query):
     element list.
     """
 
-    llm = LlamaOpenAI(model="gpt-3.5-turbo")
+    llm = LlamaOpenAI(model=model)
 
     program = OpenAIPydanticProgram.from_defaults(
         output_cls=WikiPageList,
@@ -42,8 +42,8 @@ def create_wikidocs(wikipage_requests):
     documents = loader.load_data(pages=wikipage_requests.pages)
     return documents
 
-def create_index(query):
-    wikipage_requests = wikipage_list(query)
+def create_index(query, model):
+    wikipage_requests = wikipage_list(query, model)
     documents = create_wikidocs(wikipage_requests)
     text_splits = get_default_text_splitter(chunk_size=150, chunk_overlap=45)
     parser = SimpleNodeParser.from_defaults(text_splitter=text_splits)
