@@ -5,4 +5,4 @@
 3. **Confirm Your Settings**: Once you've entered your pages, Click on ***Index Pages***.
 4. **Await Confirmation**: Wait for a moment until the indexing is completed.
 5. **Engage with Your Agent**: Now you can freely pose questions to your conversational agent:shipit: on the ***Chat with Agent*** page on the Left. Dive in:swimmer: and explore!:smiley:
-6. **Loggs** : ??? on the right bottom
+6. **Logs** : Go to the right bottom ***Manage app*** to observe _Thought, Reasoning and Action_ framework of the agent. 
