@@ -36,10 +36,12 @@ def handle_settings():
 
 # Function to handle chat
 def handle_chat():
+    global index, agent
     st.header("Chat with Agent")
     user_message = st.text_input("You: ")
+    st.write("agent handle_chat 1 ", agent)
     if st.button("Send"):
-        st.write("agent handle_chat ", agent)
+        st.write("agent handle_chat 2 ", agent)
         if agent:
             try:
                 response = run_agent(agent, user_message)
