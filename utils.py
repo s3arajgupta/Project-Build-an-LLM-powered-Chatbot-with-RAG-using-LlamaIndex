@@ -1,6 +1,8 @@
-# REPLACE THIS WITH YOUR CODE
 import os 
 import yaml
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def get_apikey():
     # """

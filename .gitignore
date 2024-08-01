@@ -1,2 +1,7 @@
 # .gitignore
 .env
+myenv
+myenv311
+__pycache__
+.chainlit
+.devcontainer
