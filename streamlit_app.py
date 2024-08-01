@@ -27,7 +27,7 @@ def handle_settings():
             try:
                 index = create_index(query)
                 if index:
-                    st.success(f'Wikipage(s) "{query}" successfully indexed')
+                    st.success(f'Wikipage(s) "{query}" successfully indexed "{index}"')
                     # agent = create_react_agent(model_choice, index)
                 else:
                     st.error("Failed to create index.")
@@ -38,6 +38,7 @@ def handle_settings():
 # Function to handle chat
 def handle_chat():
     global index, agent, model_choice
+    st.write("agent handle_chat 0 ", index, agent, model_choice)
     agent = create_react_agent(model_choice, index)
     st.header("Chat with Agent")
     user_message = st.text_input("You: ")
