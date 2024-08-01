@@ -27,7 +27,7 @@ def handle_settings():
                 index = create_index(query)
                 if index:
                     st.success(f'Wikipage(s) "{query}" successfully indexed')
-                    agent = create_react_agent(model_choice, index)
+                    # agent = create_react_agent(model_choice, index)
                 else:
                     st.error("Failed to create index.")
             except Exception as e:
@@ -37,6 +37,7 @@ def handle_settings():
 # Function to handle chat
 def handle_chat():
     global index, agent
+    agent = create_react_agent("gpt-3.5-turbo", index)
     st.header("Chat with Agent")
     user_message = st.text_input("You: ")
     st.write("agent handle_chat 1 ", agent)
