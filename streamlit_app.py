@@ -8,6 +8,7 @@ import os
 # Initialize global variables
 index = None
 agent = None
+model_choice = None
 
 # Function to show instructions
 def show_instructions():
@@ -17,7 +18,7 @@ def show_instructions():
 
 # Function to handle settings
 def handle_settings():
-    global index, agent
+    global index, agent, model_choice
     st.header("Settings")
     model_choice = st.selectbox("Choose Model:", ["gpt-3.5-turbo"])
     query = st.text_input("Enter pages to index (comma-separated):", "paris, tokyo")
@@ -36,8 +37,8 @@ def handle_settings():
 
 # Function to handle chat
 def handle_chat():
-    global index, agent
-    agent = create_react_agent("gpt-3.5-turbo", index)
+    global index, agent, model_choice
+    agent = create_react_agent(model_choice, index)
     st.header("Chat with Agent")
     user_message = st.text_input("You: ")
     st.write("agent handle_chat 1 ", agent)
