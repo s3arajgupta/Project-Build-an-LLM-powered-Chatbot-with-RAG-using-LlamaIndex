@@ -132,3 +132,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# .\myenv311\Scripts\activate
+# streamlit run streamlit_app.py
