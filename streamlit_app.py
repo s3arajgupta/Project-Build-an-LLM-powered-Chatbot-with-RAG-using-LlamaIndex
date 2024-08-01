@@ -39,6 +39,7 @@ def handle_chat():
     st.header("Chat with Agent")
     user_message = st.text_input("You: ")
     if st.button("Send"):
+        st.write("agent handle_chat ", agent)
         if agent:
             try:
                 response = run_agent(agent, user_message)
